@@ -5,18 +5,20 @@ import android.app.Application;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
 public class CaseRepo {
     private CaseDao caseDao;
-    private LiveData<List<Case>> allCases;
+    private LiveData<PagedList<Case>> allCases;
 
     public CaseRepo(Application application) {
         Database database = Database.getInstance(application);
         caseDao = database.caseDao();
-        allCases = caseDao.getAllCases();
+        allCases = new LivePagedListBuilder<>(caseDao.getAllCases(),30).build();
     }
 
-    public LiveData<List<Case>> getAllCases()
+    public LiveData<PagedList<Case>> getAllCases()
     {
         return allCases;
     }

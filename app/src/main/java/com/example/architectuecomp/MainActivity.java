@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Interceptor;
@@ -16,11 +17,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,18 +53,20 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        caseViewModel.getAllCases().observe(this, new Observer<List<Case>>() {
+        caseViewModel.getAllCases().observe(this, new Observer<PagedList<Case>>() {
             @Override
-            public void onChanged(List<Case> cases) {
-                adapter.submitList(cases);
+            public void onChanged(PagedList<Case> cases) {
                 adapter.setCases(cases);
+                adapter.submitList(cases);
+                adapter.setActivity(MainActivity.this);
+                adapter.setAnimationView(lottieAnimationView);
             }
         });
 
         //fetchData();
 
     }
-    public void fetchData()
+    public void fetchData(final int index)
     {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
@@ -99,8 +104,15 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 final List<com.example.architectuecomp.Response> responses = response.body().getResponse();
-                caseViewModel.deleteAll();
-                for(com.example.architectuecomp.Response res : responses){
+                if(index == 0){
+                    caseViewModel.deleteAll();
+                    Log.d("MAIN", "onResponse: fetching new data");
+                }
+                else {
+                    Log.d("MAIN", "onResponse: fetching next cluster of data");
+                }
+                for(int i = index; i < Math.min(responses.size(),index + 30); i++){
+                    com.example.architectuecomp.Response res = responses.get(i);
                     Case aCase = new Case(res.getCountry(),res.getDay()+" | "+res.getTime(),res.getCases().getTotal()+"",res.getDeaths().getTotal()+"",0+"");
                     caseViewModel.insert(aCase);
                 }
@@ -140,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 lottieAnimationView.setVisibility(View.VISIBLE);
-                fetchData();
+                fetchData(0);
                 return false;
             }
         });

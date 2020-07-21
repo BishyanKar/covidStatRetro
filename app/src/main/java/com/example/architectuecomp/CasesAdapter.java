@@ -8,22 +8,37 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CasesAdapter extends ListAdapter<Case, CasesAdapter.CaseHolder> implements Filterable {
+public class CasesAdapter extends PagedListAdapter<Case, CasesAdapter.CaseHolder> implements Filterable {
 
     private Context mContext;
     private List<Case> casesFull;
     private List<Case> cases;
+    private MainActivity activity;
+    private LottieAnimationView animationView;
+
+
+    public void setAnimationView(LottieAnimationView animationView) {
+        this.animationView = animationView;
+    }
+
+    public void setActivity(MainActivity activity) {
+        this.activity = activity;
+    }
+
     protected CasesAdapter() {
         super(diffCallback);
     }
@@ -48,7 +63,8 @@ public class CasesAdapter extends ListAdapter<Case, CasesAdapter.CaseHolder> imp
     @Override
     public CaseHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_case_layout,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_case_layout, parent, false);
+
         return new CaseHolder(view);
     }
 
@@ -94,18 +110,24 @@ public class CasesAdapter extends ListAdapter<Case, CasesAdapter.CaseHolder> imp
     @Override
     public void onBindViewHolder(@NonNull CaseHolder holder, int position) {
         Case aCase = getItem(holder.getAdapterPosition());
+        if(holder.getAdapterPosition() == cases.size()-1) {
+            animationView.setVisibility(View.VISIBLE);
+            activity.fetchData(cases.size());
+        }
 
         holder.constraintLayout.setAnimation(AnimationUtils.loadAnimation(mContext,R.anim.fade_slide_down));
 
-        String country = aCase.getCountry();
-        String totalCases = aCase.getTotal();
-        String death = aCase.getDeaths();
-        String updated = aCase.getTimeStamp();
+        if(aCase!=null) {
+            String country = aCase.getCountry();
+            String totalCases = aCase.getTotal();
+            String death = aCase.getDeaths();
+            String updated = aCase.getTimeStamp();
 
-        holder.country.setText(country);
-        holder.updated.setText(updated);
-        holder.death.setText(death);
-        holder.total.setText(totalCases);
+            holder.country.setText(country);
+            holder.updated.setText(updated);
+            holder.death.setText(death);
+            holder.total.setText(totalCases);
+        }
     }
 
     static class CaseHolder extends RecyclerView.ViewHolder{

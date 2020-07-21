@@ -7,10 +7,11 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.paging.PagedList;
 
 public class CaseViewModel extends AndroidViewModel {
     private CaseRepo caseRepo;
-    private LiveData<List<Case>> allCases;
+    private LiveData<PagedList<Case>> allCases;
 
     public CaseViewModel(@NonNull Application application) {
         super(application);
@@ -30,7 +31,7 @@ public class CaseViewModel extends AndroidViewModel {
     public void deleteAll(){
         caseRepo.deleteAll();
     }
-    public LiveData<List<Case>> getAllCases(){
+    public LiveData<PagedList<Case>> getAllCases(){
         return allCases;
     }
 }

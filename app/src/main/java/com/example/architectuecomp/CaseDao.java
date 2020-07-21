@@ -2,7 +2,9 @@ package com.example.architectuecomp;
 
 import java.util.List;
 
+
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -20,8 +22,8 @@ public interface CaseDao {
     @Delete
     void delete(Case aCase);
 
-    @Query("select * from case_table order by total desc")
-    LiveData<List<Case>> getAllCases();
+    @Query("select * from case_table")
+    DataSource.Factory<Integer,Case> getAllCases();
 
     @Query("delete from case_table")
     void deleteAll();
