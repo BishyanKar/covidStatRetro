@@ -29,7 +29,7 @@ public class ApiProvider {
                         Request originalRequest = chain.request();
                         Request newRequest = originalRequest.newBuilder()
                                 .addHeader("x-rapidapi-host", "covid-193.p.rapidapi.com")
-                                .addHeader("x-rapidapi-key", "37da5429cdmsh77d3386611ed33dp161062jsn2bf003233873")
+                                .addHeader("x-rapidapi-key", "PLACE_YOUR_OWN")
                                 .build();
 
                         return chain.proceed(newRequest);
