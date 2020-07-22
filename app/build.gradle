@@ -34,9 +34,10 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     def lifecycle_version = "2.2.0"
     def room_version = "2.2.5"
-    def paging_version = "2.1.2"
+    def paging_version = "3.0.0-alpha02"
 
     implementation "androidx.paging:paging-runtime:$paging_version"
+
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

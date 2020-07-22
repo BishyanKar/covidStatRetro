@@ -1,4 +1,4 @@
-package com.example.architectuecomp;
+package com.example.architectuecomp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

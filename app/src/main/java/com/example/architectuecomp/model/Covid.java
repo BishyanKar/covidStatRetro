@@ -1,5 +1,7 @@
-package com.example.architectuecomp;
+package com.example.architectuecomp.model;
 import java.util.List;
+
+import com.example.architectuecomp.reponses.Response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

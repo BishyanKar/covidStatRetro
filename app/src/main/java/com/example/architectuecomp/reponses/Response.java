@@ -1,4 +1,7 @@
-package com.example.architectuecomp;
+package com.example.architectuecomp.reponses;
+import com.example.architectuecomp.model.Cases;
+import com.example.architectuecomp.model.Deaths;
+import com.example.architectuecomp.model.Tests;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

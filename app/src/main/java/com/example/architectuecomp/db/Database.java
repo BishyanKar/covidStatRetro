@@ -1,12 +1,12 @@
-package com.example.architectuecomp;
+package com.example.architectuecomp.db;
 
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
+import com.example.architectuecomp.model.Case;
+
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @androidx.room.Database(entities = {Case.class},version = 2,exportSchema = false)
 public abstract class Database extends RoomDatabase {
@@ -16,7 +16,7 @@ public abstract class Database extends RoomDatabase {
 
     public static synchronized Database getInstance(Context context) {
         if(instance == null){
-            instance = Room.databaseBuilder(context.getApplicationContext(),Database.class,"case_database")
+            instance = Room.databaseBuilder(context.getApplicationContext(), Database.class,"case_database")
                     .fallbackToDestructiveMigration()
                     .build();
         }

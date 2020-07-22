@@ -1,10 +1,10 @@
-package com.example.architectuecomp;
+package com.example.architectuecomp.db;
+
+import com.example.architectuecomp.model.Case;
 
 import java.util.List;
 
-
 import androidx.lifecycle.LiveData;
-import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -23,7 +23,7 @@ public interface CaseDao {
     void delete(Case aCase);
 
     @Query("select * from case_table")
-    DataSource.Factory<Integer,Case> getAllCases();
+    LiveData<List<Case>> getAllCases();
 
     @Query("delete from case_table")
     void deleteAll();
